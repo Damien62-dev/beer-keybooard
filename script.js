@@ -7,10 +7,23 @@ const sendButton = document.getElementById('sendButton');
 const messagesArea = document.getElementById('messagesArea');
 
 // === SONS ===
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let audioContext;
+let soundEnabled = false;
+
+// Initialiser l'audio au clic
+document.getElementById('enableSound')?.addEventListener('click', function () {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    soundEnabled = true;
+    document.getElementById('soundOverlay').classList.add('hidden');
+
+    // Jouer un son de test
+    playSound(1000, 0.1);
+});
 
 // Fonction pour jouer un son
 function playSound(frequency, duration, type = 'sine') {
+    if (!soundEnabled || !audioContext) return;
+
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
 
