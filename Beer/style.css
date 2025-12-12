@@ -1,0 +1,406 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    /* Empêcher le zoom sur mobile */
+    touch-action: manipulation;
+}
+
+/* Effet de fond animé */
+body::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+}
+
+/* Crâne en arrière-plan */
+.skull-background {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 120px;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    /* Pour mobile, meilleure gestion de la hauteur */
+}
+
+/* Zone de conversation */
+.messages-area {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.4;
+    animation: messageSlide 0.3s ease-out;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.sent {
+    align-self: flex-end;
+    background: linear-gradient(135deg, rgba(0, 150, 255, 0.6), rgba(0, 100, 200, 0.6));
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 100, 255, 0.3);
+}
+
+.message-time {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* Zone de prévisualisation et input */
+.input-container {
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 10px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    /* Support iPhone notch */
+}
+
+.input-preview {
+    background: rgba(0, 50, 100, 0.4);
+    border: 2px solid rgba(0, 150, 255, 0.3);
+    border-radius: 20px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    /* Taille minimale pour iOS touch */
+}
+
+.preview-text {
+    flex: 1;
+    color: #00d4ff;
+    font-size: 15px;
+    text-shadow: 0 0 5px rgba(0, 212, 255, 0.5);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.preview-text.empty::before {
+    content: 'Tape "beer" pour envoyer...';
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+.send-button {
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.8), rgba(0, 150, 255, 0.8));
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    /* Taille tactile optimale */
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 150, 255, 0.4);
+    /* Empêcher la sélection */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.send-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.send-button:not(:disabled):active {
+    transform: scale(0.95);
+}
+
+.send-icon {
+    color: white;
+    font-size: 20px;
+}
+
+.keyboard-container {
+    background: rgba(10, 14, 39, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 8px;
+    border-top: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.key {
+    background: linear-gradient(145deg, rgba(0, 100, 200, 0.3), rgba(0, 50, 150, 0.3));
+    border: 2px solid rgba(0, 150, 255, 0.4);
+    border-radius: 6px;
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0;
+    min-width: 30px;
+    width: 9vw;
+    /* Responsive width */
+    max-width: 38px;
+    height: 44px;
+    /* Taille tactile iOS */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    text-transform: lowercase;
+    box-shadow:
+        0 4px 15px rgba(0, 100, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.key::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.key:active {
+    transform: scale(0.95);
+    box-shadow:
+        0 2px 8px rgba(0, 100, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.key.pressed::before {
+    left: 100%;
+}
+
+.key.highlighted {
+    background: linear-gradient(145deg, rgba(0, 150, 255, 0.6), rgba(0, 100, 255, 0.6));
+    border-color: #00d4ff;
+    animation: keyGlow 0.3s ease;
+}
+
+@keyframes keyGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 15px rgba(0, 150, 255, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 4px 25px rgba(0, 200, 255, 0.9);
+    }
+}
+
+.key.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.key.space-bar {
+    flex: 1;
+    max-width: 180px;
+    width: auto;
+}
+
+.key.backspace {
+    min-width: 50px;
+    width: auto;
+    font-size: 18px;
+}
+
+.suggestion-bar {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    margin-bottom: 6px;
+}
+
+.suggestion {
+    background: rgba(0, 100, 200, 0.3);
+    border: 1px solid rgba(0, 150, 255, 0.4);
+    border-radius: 6px;
+    color: #00d4ff;
+    padding: 6px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.suggestion:active {
+    background: rgba(0, 150, 255, 0.4);
+    transform: scale(0.95);
+}
+
+/* Lightning effects */
+.lightning {
+    position: absolute;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(0, 212, 255, 0.8), transparent);
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes lightning {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    20% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    40% {
+        opacity: 0;
+    }
+}
+
+/* Media queries pour petits écrans */
+@media (max-width: 375px) {
+    .skull-background {
+        font-size: 100px;
+    }
+
+    .key {
+        font-size: 16px;
+        min-width: 28px;
+        height: 40px;
+    }
+
+    .preview-text {
+        font-size: 14px;
+    }
+
+    .message {
+        font-size: 14px;
+    }
+}
+
+/* Media queries pour grands écrans */
+@media (min-width: 768px) {
+    .key {
+        width: 50px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .messages-area {
+        padding: 20px;
+    }
+}
+
+/* Support du paysage mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .skull-background {
+        display: none;
+    }
+
+    .messages-area {
+        padding: 10px;
+    }
+
+    .keyboard-row {
+        margin-bottom: 4px;
+    }
+
+    .key {
+        height: 38px;
+    }
+}

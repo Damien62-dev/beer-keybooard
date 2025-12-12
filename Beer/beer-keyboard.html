@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beer Keyboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="skull-background">💀</div>
+
+    <div class="container">
+        <!-- Zone de messages -->
+        <div class="messages-area" id="messagesArea">
+            <!-- Les messages apparaîtront ici -->
+        </div>
+
+        <!-- Zone de prévisualisation et input -->
+        <div class="input-container">
+            <div class="input-preview">
+                <div class="preview-text" id="previewText" class="empty"></div>
+                <button class="send-button" id="sendButton" disabled onclick="sendMessage()">
+                    <span class="send-icon">➤</span>
+                </button>
+            </div>
+
+            <div class="keyboard-container">
+                <div class="suggestion-bar">
+                    <div class="suggestion" onclick="autoComplete()">beer</div>
+                </div>
+
+                <div class="keyboard-row">
+                    <div class="key" data-key="b">b</div>
+                    <div class="key" data-key="e">e</div>
+                    <div class="key" data-key="e">e</div>
+                    <div class="key" data-key="r">r</div>
+                    <div class="key disabled" data-key="t">t</div>
+                    <div class="key disabled" data-key="y">y</div>
+                    <div class="key disabled" data-key="u">u</div>
+                    <div class="key disabled" data-key="i">i</div>
+                    <div class="key disabled" data-key="o">o</div>
+                    <div class="key disabled" data-key="p">p</div>
+                </div>
+
+                <div class="keyboard-row">
+                    <div class="key disabled" data-key="a">a</div>
+                    <div class="key disabled" data-key="s">s</div>
+                    <div class="key disabled" data-key="d">d</div>
+                    <div class="key disabled" data-key="f">f</div>
+                    <div class="key disabled" data-key="g">g</div>
+                    <div class="key disabled" data-key="h">h</div>
+                    <div class="key disabled" data-key="j">j</div>
+                    <div class="key disabled" data-key="k">k</div>
+                    <div class="key disabled" data-key="l">l</div>
+                </div>
+
+                <div class="keyboard-row">
+                    <div class="key disabled" data-key="z">z</div>
+                    <div class="key disabled" data-key="x">x</div>
+                    <div class="key disabled" data-key="c">c</div>
+                    <div class="key disabled" data-key="v">v</div>
+                    <div class="key disabled" data-key="b">b</div>
+                    <div class="key disabled" data-key="n">n</div>
+                    <div class="key disabled" data-key="m">m</div>
+                    <div class="key backspace" onclick="backspace()">⌫</div>
+                </div>
+
+                <div class="keyboard-row">
+                    <div class="key space-bar" onclick="addSpace()">beer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
